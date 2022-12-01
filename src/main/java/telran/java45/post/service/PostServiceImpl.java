@@ -79,6 +79,7 @@ public class PostServiceImpl implements PostService {
 		post.addComment(comment);
 		postRepository.save(post);
 		return modelMapper.map(post,  PostDto.class);  
+	
 	}
 
 	@Override
@@ -103,3 +104,5 @@ public class PostServiceImpl implements PostService {
 	}
 
 }
+
+

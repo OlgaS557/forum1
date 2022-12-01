@@ -1,5 +1,7 @@
 package telran.java45.accounting.service;
 
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,10 @@ import telran.java45.accounting.dto.UserUpdateDto;
 import telran.java45.accounting.dto.exceptions.UserExistsException;
 import telran.java45.accounting.dto.exceptions.UserNotFoundException;
 import telran.java45.accounting.model.UserAccount;
+import telran.java45.post.dto.PostDto;
+import telran.java45.post.dto.exceptions.PostNotFoundException;
+import telran.java45.post.model.Post;
+import telran.java45.student.dto.StudentCreateDto;
 
 @Service
 @RequiredArgsConstructor
@@ -37,19 +43,30 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Override
 	public UserAccountResponseDto removeUser(String login) {
-		// TODO Auto-generated method stub
-		return null;
+		UserAccount userAccount = repository.findById(login).orElseThrow(UserNotFoundException::new);
+		repository.delete(userAccount);
+		return modelMapper.map(userAccount, UserAccountResponseDto.class);
 	}
 
 	@Override
 	public UserAccountResponseDto editUser(String login, UserUpdateDto userUpdateDto) {
-		// TODO Auto-generated method stub
-		return null;
+		UserAccount userAccount = repository.findById(login).orElseThrow(UserNotFoundException::new);
+		if (userUpdateDto.getFirstName() != null) {
+			userAccount.setFirstName(userUpdateDto.getFirstName());
+		}
+		if (userUpdateDto.getLastName() != null) {
+			userAccount.setLastName(userUpdateDto.getLastName());
+		}
+		repository.save(userAccount);
+		return modelMapper.map(userAccount, UserAccountResponseDto.class);
+		
 	}
+	
 
 	@Override
 	public RolesResponseDto changeRolesList(String login, String role, boolean isAddRole) {
-		// TODO Auto-generated method stub
+		UserAccount userAccount = repository.findById(login).orElseThrow(UserNotFoundException::new);
+		
 		return null;
 	}
 
